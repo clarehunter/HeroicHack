@@ -3,13 +3,14 @@ import static com.clarebhunter.heroichack.HashGenerator.generate;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import android.media.Image;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MarvelAPIReader {
     private static String apiKey = "0d20b732e9366c58db70602fc87cf3df";
@@ -17,13 +18,68 @@ public class MarvelAPIReader {
     private static String privateKey = "4fe8d50f61812a2fe69a4ec406da67d594b4e193";
 
     public static void main(String[] args) {
+        Integer id = getCharacterID("Spider-Man");
+        System.out.println(id);
+
+        List<Integer> idList = new ArrayList<>(3);
+        idList.add(1009610);
+        idList.add(1009220);
+        idList.add(1011334);
+
+        List<Comic> comicList = getComics(idList);
+        System.out.println(comicList);
+    }
+
+    private static List<MarvelCharacter> characterMap() {
+        List<MarvelCharacter> characters = null;
         try {
             timeStamp = System.currentTimeMillis();
             String hashString = generate(timeStamp, privateKey, apiKey);
-            System.out.println(getHTML(String.format("https://gateway.marvel.com/v1/public/characters?apikey=%s&ts=%s&hash=%s", apiKey, timeStamp, hashString)));
+
+            characters = parseCharacters(getHTML(String.format("https://gateway.marvel.com/v1/public/characters?apikey=%s&ts=%s&hash=%s", apiKey, timeStamp, hashString)));
+
         } catch (Exception e) {
             System.out.println(e);
         }
+
+        return characters;
+    }
+
+    private static Integer getCharacterID(String name) {
+        Integer idNum = 0;
+        try {
+            timeStamp = System.currentTimeMillis();
+            String hashString = generate(timeStamp, privateKey, apiKey);
+
+            idNum = singleCharacter(getHTML(String.format("https://gateway.marvel.com/v1/public/characters?name=%s&apikey=%s&ts=%s&hash=%s", name, apiKey, timeStamp, hashString)));
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return idNum;
+    }
+
+    public static Integer singleCharacter(String jsonLine) {
+        JSONObject data;
+        JSONArray result;
+        int idNum = 0;
+
+        try {
+            JSONObject obj = new JSONObject(jsonLine);
+
+            data = obj.getJSONObject("data");
+            result = data.getJSONArray("results");
+
+            for (int i = 0; i < result.length(); i++) {
+                idNum = result.getJSONObject(i).getInt("id");
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return idNum;
     }
 
     private static String getHTML(String urlToRead) throws Exception {
@@ -39,14 +95,13 @@ public class MarvelAPIReader {
         }
         rd.close();
 
-        parse(result.toString());
         return result.toString();
     }
 
-    public static void parse(String jsonLine) {
+    public static List<MarvelCharacter> parseCharacters(String jsonLine) {
         JSONObject data;
         JSONArray result;
-        Map<String, Integer> characterMap = new HashMap<>();
+        List<MarvelCharacter> characterList = new ArrayList<>();
 
         try {
             JSONObject obj = new JSONObject(jsonLine);
@@ -57,11 +112,68 @@ public class MarvelAPIReader {
             for (int i = 0; i < result.length(); i++) {
                 String name = result.getJSONObject(i).getString("name");
                 int idNum = result.getJSONObject(i).getInt("id");
-                characterMap.put(name, idNum);
+                MarvelCharacter character = new MarvelCharacter(name, idNum);
+                characterList.add(character);
             }
         } catch (Exception e) {
             System.out.println(e);
         }
-        System.out.println(characterMap);
+
+        return characterList;
+    }
+
+    public static List<Comic> getComics(List<Integer> ids) {
+        List<Comic> comics = null;
+        try {
+            timeStamp = System.currentTimeMillis();
+            String hashString = generate(timeStamp, privateKey, apiKey);
+            String characters = "";
+
+            if (ids.size() == 1){
+                characters = ids.get(0) + "";
+                System.out.println("here");
+            } else {
+                for (int i = 0; i < ids.size() - 1; i++) {
+                    characters += ids.get(i) + "%2C%";
+                }
+                characters += ids.get(ids.size() - 1);
+            }
+            comics = parseComics(getHTML(String.format("https://gateway.marvel.com:443/v1/public/comics?sharedAppearances=%s&apikey=%s&ts=%s&hash=%s", characters, apiKey, timeStamp, hashString)));
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return comics;
+    }
+
+    private static List<Comic> parseComics(String jsonLine) {
+        JSONObject data;
+        JSONArray result;
+        List<Comic> comicList = new ArrayList<>();
+
+        try {
+            JSONObject obj = new JSONObject(jsonLine);
+
+            data = obj.getJSONObject("data");
+            result = data.getJSONArray("results");
+
+            for (int i = 0; i < result.length(); i++) {
+                String title = result.getJSONObject(i).getString("title");
+                String description;
+                try {
+                    description = result.getJSONObject(i).getString("description");
+                } catch (Exception e) {
+                    description = "There is no description for this comic.";
+                }
+                //Image thumbnail = result.getJSONObject(i).getString("thumbnail");
+                //Comic comic = new Comic(title, description, thumbnail);
+                Comic comic = new Comic(title, description);
+                comicList.add(comic);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return comicList;
     }
 }
