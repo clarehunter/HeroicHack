@@ -34,20 +34,29 @@ public class MainActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new CharacterAdapter(getListData());
+        setListData();
+        mAdapter = new CharacterAdapter(characterList);
         mRecyclerView.setAdapter(mAdapter);
 
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Here's a Snackbar", Snackbar.LENGTH_LONG)
+                List<Character> selectedChars = new ArrayList<>();
+                String chars = "";
+                for (Character c: characterList) {
+                    if(c.isSelected()) {
+                        selectedChars.add(c);
+                        chars+=c.getName() + " ";
+                    }
+                }
+                Snackbar.make(view, "" + chars, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
     }
 
-    private List<Character> getListData() {
+    private void setListData() {
         characterList = new ArrayList<>();
         characterList.add(new Character("SpiderMan", 0));
         characterList.add(new Character("Black Widow", 0));
@@ -56,6 +65,5 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 5; i < 21; i++) {
             characterList.add(new Character("Character " + i, 0));
         }
-        return characterList;
     }
 }
