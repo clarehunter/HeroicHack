@@ -27,4 +27,8 @@ public class Comic {
     public Image getThumbNail() {
         return this.thumbnail;
     }
+
+    public String toString() {
+        return this.name + ": " + this.description;
+    }
 }
