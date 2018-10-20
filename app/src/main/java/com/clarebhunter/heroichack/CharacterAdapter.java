@@ -10,7 +10,7 @@ import android.widget.TextView;
 import java.util.List;
 
 public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.CharViewHolder> {
-    private List<Character> mDataset;
+    private List<MarvelCharacter> mDataset;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -27,7 +27,7 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.Char
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public CharacterAdapter(List<Character> myDataset) {
+    public CharacterAdapter(List<MarvelCharacter> myDataset) {
         mDataset = myDataset;
     }
 
@@ -46,14 +46,14 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.Char
     public void onBindViewHolder(final CharacterAdapter.CharViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        final Character character = mDataset.get(position);
-        holder.mTextView.setText(character.getName());
-        holder.mView.setBackgroundColor(character.isSelected() ? holder.mView.getContext().getResources().getColor(R.color.colorBrightAccent) : Color.WHITE);
+        final MarvelCharacter marvelCharacter = mDataset.get(position);
+        holder.mTextView.setText(marvelCharacter.getName());
+        holder.mView.setBackgroundColor(marvelCharacter.isSelected() ? holder.mView.getContext().getResources().getColor(R.color.colorBrightAccent) : Color.WHITE);
         holder.mTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                character.setSelected(!character.isSelected());
-                holder.mView.setBackgroundColor(character.isSelected() ? holder.mView.getContext().getResources().getColor(R.color.colorBrightAccent) : Color.WHITE);
+                marvelCharacter.setSelected(!marvelCharacter.isSelected());
+                holder.mView.setBackgroundColor(marvelCharacter.isSelected() ? holder.mView.getContext().getResources().getColor(R.color.colorBrightAccent) : Color.WHITE);
             }
         });
     }

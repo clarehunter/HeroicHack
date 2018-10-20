@@ -1,16 +1,12 @@
 package com.clarebhunter.heroichack;
 
-import android.graphics.Color;
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FloatingActionButton fab;
 
-    private List<Character> characterList;
+    private List<MarvelCharacter> marvelCharacterList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,35 +31,34 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(mLayoutManager);
         setListData();
-        mAdapter = new CharacterAdapter(characterList);
+        mAdapter = new CharacterAdapter(marvelCharacterList);
         mRecyclerView.setAdapter(mAdapter);
 
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                List<Character> selectedChars = new ArrayList<>();
-                String chars = "";
-                for (Character c: characterList) {
+                ArrayList<MarvelCharacter> selectedChars = new ArrayList<>();
+                for (MarvelCharacter c: marvelCharacterList) {
                     if(c.isSelected()) {
                         selectedChars.add(c);
-                        chars+=c.getName() + " ";
                     }
                 }
-                Snackbar.make(view, "" + chars, Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(getApplicationContext(), ComicsActivity.class);
+                intent.putParcelableArrayListExtra("charIDs", selectedChars);
+                startActivity(intent);
             }
         });
     }
 
     private void setListData() {
-        characterList = new ArrayList<>();
-        characterList.add(new Character("SpiderMan", 0));
-        characterList.add(new Character("Black Widow", 0));
-        characterList.add(new Character("Thor", 0));
-        characterList.add(new Character("Captain America", 0));
+        marvelCharacterList = new ArrayList<>();
+        marvelCharacterList.add(new MarvelCharacter("SpiderMan", 0));
+        marvelCharacterList.add(new MarvelCharacter("Black Widow", 0));
+        marvelCharacterList.add(new MarvelCharacter("Thor", 0));
+        marvelCharacterList.add(new MarvelCharacter("Captain America", 0));
         for (int i = 5; i < 21; i++) {
-            characterList.add(new Character("Character " + i, 0));
+            marvelCharacterList.add(new MarvelCharacter("MarvelCharacter " + i, 0));
         }
     }
 }
