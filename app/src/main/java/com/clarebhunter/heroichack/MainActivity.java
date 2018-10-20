@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        setListData();
+        marvelCharacterList = listData();
         mAdapter = new CharacterAdapter(marvelCharacterList);
         mRecyclerView.setAdapter(mAdapter);
 
@@ -51,14 +51,26 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void setListData() {
-        marvelCharacterList = new ArrayList<>();
-        marvelCharacterList.add(new MarvelCharacter("SpiderMan", 0));
-        marvelCharacterList.add(new MarvelCharacter("Black Widow", 0));
-        marvelCharacterList.add(new MarvelCharacter("Thor", 0));
-        marvelCharacterList.add(new MarvelCharacter("Captain America", 0));
-        for (int i = 5; i < 21; i++) {
-            marvelCharacterList.add(new MarvelCharacter("MarvelCharacter " + i, 0));
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        for (MarvelCharacter c: marvelCharacterList) {
+            if (c.isSelected()) {
+                c.setSelected(false);
+            }
         }
+        mAdapter.notifyDataSetChanged();
+    }
+
+    private List<MarvelCharacter> listData() {
+        List<MarvelCharacter> chars = new ArrayList<>();
+        chars.add(new MarvelCharacter("SpiderMan", 0));
+        chars.add(new MarvelCharacter("Black Widow", 0));
+        chars.add(new MarvelCharacter("Thor", 0));
+        chars.add(new MarvelCharacter("Captain America", 0));
+        for (int i = 5; i < 21; i++) {
+            chars.add(new MarvelCharacter("Character " + i, 0));
+        }
+        return chars;
     }
 }

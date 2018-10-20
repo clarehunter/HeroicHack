@@ -19,7 +19,12 @@ public class ComicsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_comics);
 
         Intent intent = getIntent();
-
+        marvelCharacters = intent.getParcelableArrayListExtra("charIDs");
+        String names = "";
+        for (MarvelCharacter c: marvelCharacters) {
+            names += c.getName() + "\n";
+        }
         mTextView = (TextView) findViewById(R.id.textView);
+        mTextView.setText(names);
     }
 }
