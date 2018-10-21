@@ -79,9 +79,6 @@ public class MainActivity extends AppCompatActivity {
         chars.add(new MarvelCharacter("DareDevil", MarvelAPIReader.getCharacterID("DareDevil")));
         chars.add(new MarvelCharacter("Hulk", MarvelAPIReader.getCharacterID("Hulk")));
         chars.add(new MarvelCharacter("Iron Man", MarvelAPIReader.getCharacterID("Iron Man")));
-
-        Toast toast = Toast.makeText(getApplicationContext(), "" + chars.get(0).getId(), Toast.LENGTH_LONG);
-        toast.show();
         return chars;
     }
 }

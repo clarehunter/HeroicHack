@@ -24,6 +24,10 @@ public class Comic {
         return this.description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Image getThumbNail() {
         return this.thumbnail;
     }
