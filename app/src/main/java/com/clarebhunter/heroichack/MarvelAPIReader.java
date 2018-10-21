@@ -21,10 +21,13 @@ public class MarvelAPIReader {
         Integer id = getCharacterID("Spider-Man");
         System.out.println(id);
 
-        List<Integer> idList = new ArrayList<>(3);
+        List<Integer> idList = new ArrayList<>();
+
         idList.add(1009610);
+        idList.add(1994);
         idList.add(1009220);
-        idList.add(1011334);
+        //idList.add(1011334);
+        //idList.add(1994);
 
         List<Comic> comicList = getComics(idList);
         System.out.println(comicList);
@@ -45,8 +48,12 @@ public class MarvelAPIReader {
         return characters;
     }
 
-    private static Integer getCharacterID(String name) {
+    public static Integer getCharacterID(String name) {
         Integer idNum = 0;
+        if (name.contains(" ")) {
+            int spaceChar = name.indexOf(" ");
+            name = name.substring(0, spaceChar) + "%20" + name.substring(spaceChar, name.length());
+        }
         try {
             timeStamp = System.currentTimeMillis();
             String hashString = generate(timeStamp, privateKey, apiKey);
@@ -131,14 +138,14 @@ public class MarvelAPIReader {
 
             if (ids.size() == 1){
                 characters = ids.get(0) + "";
-                System.out.println("here");
             } else {
                 for (int i = 0; i < ids.size() - 1; i++) {
-                    characters += ids.get(i) + "%2C%";
+                    characters += ids.get(i) + "%2C";
                 }
                 characters += ids.get(ids.size() - 1);
             }
-            comics = parseComics(getHTML(String.format("https://gateway.marvel.com:443/v1/public/comics?sharedAppearances=%s&apikey=%s&ts=%s&hash=%s", characters, apiKey, timeStamp, hashString)));
+            String urlToPassIN = String.format("https://gateway.marvel.com/v1/public/comics?sharedAppearances=%s&apikey=%s&ts=%s&hash=%s", characters, apiKey, timeStamp, hashString);
+            comics = parseComics(getHTML(urlToPassIN));
         } catch (Exception e) {
             System.out.println(e);
         }
