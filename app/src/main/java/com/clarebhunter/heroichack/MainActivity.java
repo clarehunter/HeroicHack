@@ -64,10 +64,17 @@ public class MainActivity extends AppCompatActivity {
 
     private List<MarvelCharacter> listData() {
         List<MarvelCharacter> chars = new ArrayList<>();
-        chars.add(new MarvelCharacter("SpiderMan", 0));
-        chars.add(new MarvelCharacter("Black Widow", 0));
-        chars.add(new MarvelCharacter("Thor", 0));
-        chars.add(new MarvelCharacter("Captain America", 0));
+        chars.add(new MarvelCharacter("SpiderMan", MarvelAPIReader.getCharacterID("Spider-Man")));
+        chars.add(new MarvelCharacter("Black Widow", MarvelAPIReader.getCharacterID("Black Widow")));
+        chars.add(new MarvelCharacter("Thor", MarvelAPIReader.getCharacterID("Thor")));
+        chars.add(new MarvelCharacter("Captain America", MarvelAPIReader.getCharacterID("Captain America")));
+        chars.add(new MarvelCharacter("Deadpool", MarvelAPIReader.getCharacterID("Deadpool")));
+        chars.add(new MarvelCharacter("Jessica Jones", MarvelAPIReader.getCharacterID("Jessica Jones")));
+        chars.add(new MarvelCharacter("Black Panther", MarvelAPIReader.getCharacterID("Black Panther")));
+        chars.add(new MarvelCharacter("DareDevil", MarvelAPIReader.getCharacterID("DareDevil")));
+        chars.add(new MarvelCharacter("Hulk", MarvelAPIReader.getCharacterID("Hulk")));
+        chars.add(new MarvelCharacter("Iron Man", MarvelAPIReader.getCharacterID("Iron Man")));
+
         for (int i = 5; i < 21; i++) {
             chars.add(new MarvelCharacter("Character " + i, 0));
         }
