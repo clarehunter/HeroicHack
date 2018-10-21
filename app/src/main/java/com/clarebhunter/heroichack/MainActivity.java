@@ -1,6 +1,7 @@
 package com.clarebhunter.heroichack;
 
 import android.content.Intent;
+import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.character_recycler_view);
         mLayoutManager = new LinearLayoutManager(this);
@@ -65,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
     private List<MarvelCharacter> listData() {
         List<MarvelCharacter> chars = new ArrayList<>();
-        chars.add(new MarvelCharacter("SpiderMan", MarvelAPIReader.getCharacterID("Spider-Man")));
+        chars.add(new MarvelCharacter("Spider-Man", MarvelAPIReader.getCharacterID("Spider-Man")));
         chars.add(new MarvelCharacter("Black Widow", MarvelAPIReader.getCharacterID("Black Widow")));
         chars.add(new MarvelCharacter("Thor", MarvelAPIReader.getCharacterID("Thor")));
         chars.add(new MarvelCharacter("Captain America", MarvelAPIReader.getCharacterID("Captain America")));
@@ -75,6 +79,9 @@ public class MainActivity extends AppCompatActivity {
         chars.add(new MarvelCharacter("DareDevil", MarvelAPIReader.getCharacterID("DareDevil")));
         chars.add(new MarvelCharacter("Hulk", MarvelAPIReader.getCharacterID("Hulk")));
         chars.add(new MarvelCharacter("Iron Man", MarvelAPIReader.getCharacterID("Iron Man")));
+
+        Toast toast = Toast.makeText(getApplicationContext(), "" + chars.get(0).getId(), Toast.LENGTH_LONG);
+        toast.show();
         return chars;
     }
 }

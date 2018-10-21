@@ -22,6 +22,10 @@ public class MarvelCharacter implements Parcelable {
         return id;
     }
 
+    public void setId(int idNum) {
+        this.id = idNum;
+    }
+
     public void setSelected(boolean selected) {
         isSelected = selected;
     }

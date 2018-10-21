@@ -4,6 +4,7 @@ import static com.clarebhunter.heroichack.HashGenerator.generate;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import android.media.Image;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -17,8 +18,23 @@ public class MarvelAPIReader {
     private static long timeStamp = System.currentTimeMillis();
     private static String privateKey = "4fe8d50f61812a2fe69a4ec406da67d594b4e193";
 
+    private static List<MarvelCharacter> characterMap() {
+        List<MarvelCharacter> characters = null;
+        try {
+            timeStamp = System.currentTimeMillis();
+            String hashString = generate(timeStamp, privateKey, apiKey);
+
+            characters = parseCharacters(getHTML(String.format("https://gateway.marvel.com/v1/public/characters?apikey=%s&ts=%s&hash=%s", apiKey, timeStamp, hashString)));
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return characters;
+    }
+
     public static Integer getCharacterID(String name) {
-        Integer idNum = -1;
+        int idNum = 0;
         if (name.contains(" ")) {
             int spaceChar = name.indexOf(" ");
             name = name.substring(0, spaceChar) + "%20" + name.substring(spaceChar, name.length());
@@ -36,7 +52,7 @@ public class MarvelAPIReader {
         return idNum;
     }
 
-    public static Integer singleCharacter(String jsonLine) {
+    public static int singleCharacter(String jsonLine) {
         JSONObject data;
         JSONArray result;
         int idNum = 0;
@@ -54,7 +70,6 @@ public class MarvelAPIReader {
         } catch (Exception e) {
             System.out.println(e);
         }
-
         return idNum;
     }
 
@@ -99,7 +114,7 @@ public class MarvelAPIReader {
     }
 
     public static List<Comic> getComics(List<Integer> ids) {
-        List<Comic> comics = new ArrayList<>();
+        List<Comic> comics = null;
         try {
             timeStamp = System.currentTimeMillis();
             String hashString = generate(timeStamp, privateKey, apiKey);
