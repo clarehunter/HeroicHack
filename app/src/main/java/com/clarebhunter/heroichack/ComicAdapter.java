@@ -1,6 +1,5 @@
 package com.clarebhunter.heroichack;
 
-import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,12 +19,14 @@ public class ComicAdapter extends RecyclerView.Adapter<ComicAdapter.ComicViewHol
         // each data item is just a string in this case
         public View mView;
         public CardView mCardView;
-        public TextView mTextView;
+        public TextView mTitleTextView;
+        public TextView mDescTextView;
         public ComicViewHolder(View view) {
             super(view);
             mView = view;
             mCardView = (CardView) view.findViewById(R.id.card_view);
-            mTextView = (TextView) view.findViewById(R.id.comic_text);
+            mTitleTextView = (TextView) view.findViewById(R.id.comic_title_text);
+            mDescTextView = (TextView) view.findViewById(R.id.comic_desc_text);
         }
     }
 
@@ -50,7 +51,8 @@ public class ComicAdapter extends RecyclerView.Adapter<ComicAdapter.ComicViewHol
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         final Comic comic = mDataset.get(position);
-        holder.mTextView.setText(comic.getName());
+        holder.mTitleTextView.setText(comic.getName());
+        holder.mDescTextView.setText(comic.getDescription());
     }
 
     // Return the size of your dataset (invoked by the layout manager)

@@ -17,39 +17,8 @@ public class MarvelAPIReader {
     private static long timeStamp = System.currentTimeMillis();
     private static String privateKey = "4fe8d50f61812a2fe69a4ec406da67d594b4e193";
 
-    public static void main(String[] args) {
-        Integer id = getCharacterID("Spider-Man");
-        System.out.println(id);
-
-        List<Integer> idList = new ArrayList<>();
-
-        idList.add(1009610);
-        idList.add(1994);
-        idList.add(1009220);
-        //idList.add(1011334);
-        //idList.add(1994);
-
-        List<Comic> comicList = getComics(idList);
-        System.out.println(comicList);
-    }
-
-    private static List<MarvelCharacter> characterMap() {
-        List<MarvelCharacter> characters = null;
-        try {
-            timeStamp = System.currentTimeMillis();
-            String hashString = generate(timeStamp, privateKey, apiKey);
-
-            characters = parseCharacters(getHTML(String.format("https://gateway.marvel.com/v1/public/characters?apikey=%s&ts=%s&hash=%s", apiKey, timeStamp, hashString)));
-
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-
-        return characters;
-    }
-
     public static Integer getCharacterID(String name) {
-        Integer idNum = 0;
+        Integer idNum = -1;
         if (name.contains(" ")) {
             int spaceChar = name.indexOf(" ");
             name = name.substring(0, spaceChar) + "%20" + name.substring(spaceChar, name.length());
@@ -130,7 +99,7 @@ public class MarvelAPIReader {
     }
 
     public static List<Comic> getComics(List<Integer> ids) {
-        List<Comic> comics = null;
+        List<Comic> comics = new ArrayList<>();
         try {
             timeStamp = System.currentTimeMillis();
             String hashString = generate(timeStamp, privateKey, apiKey);

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,10 +75,6 @@ public class MainActivity extends AppCompatActivity {
         chars.add(new MarvelCharacter("DareDevil", MarvelAPIReader.getCharacterID("DareDevil")));
         chars.add(new MarvelCharacter("Hulk", MarvelAPIReader.getCharacterID("Hulk")));
         chars.add(new MarvelCharacter("Iron Man", MarvelAPIReader.getCharacterID("Iron Man")));
-
-        for (int i = 5; i < 21; i++) {
-            chars.add(new MarvelCharacter("Character " + i, 0));
-        }
         return chars;
     }
 }
