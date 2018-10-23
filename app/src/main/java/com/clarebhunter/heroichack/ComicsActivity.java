@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,9 +39,11 @@ public class ComicsActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         comics = MarvelAPIReader.getComics(ids);
-        for (Comic c: comics) {
-            if (c.getDescription().equals("null")) {
-                c.setDescription("No Description Available");
+        if (comics != null) {
+            for (Comic c : comics) {
+                if (c.getDescription().equals("null")) {
+                    c.setDescription("No Description Available");
+                }
             }
         }
 

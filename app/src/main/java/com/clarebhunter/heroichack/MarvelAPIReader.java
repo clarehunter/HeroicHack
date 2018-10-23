@@ -3,8 +3,6 @@ import static com.clarebhunter.heroichack.HashGenerator.generate;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import android.media.Image;
-import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -156,9 +154,10 @@ public class MarvelAPIReader {
                 } catch (Exception e) {
                     description = "There is no description for this comic.";
                 }
-                //Image thumbnail = result.getJSONObject(i).getString("thumbnail");
-                //Comic comic = new Comic(title, description, thumbnail);
-                Comic comic = new Comic(title, description);
+                JSONObject thumbnail = (JSONObject) result.getJSONObject(i).get("thumbnail");
+                String imagePath = thumbnail.getString("path") + "."
+                                        + thumbnail.getString("extension");
+                Comic comic = new Comic(title, description, imagePath);
                 comicList.add(comic);
             }
         } catch (Exception e) {

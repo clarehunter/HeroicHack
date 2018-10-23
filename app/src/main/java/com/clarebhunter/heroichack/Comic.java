@@ -1,19 +1,18 @@
 package com.clarebhunter.heroichack;
-import android.media.Image;
 
 public class Comic {
     private String name;
     private String description;
-    private Image thumbnail;
+    private String imagePath;
 
-//    public Comic(String name, String description, Image thumbnail) {
-//        this.name = name;
-//        this.description = description;
-//        this.thumbnail = thumbnail;
-//    }
-    public Comic(String name, String description) {
+    public Comic(String name, String description, String imagePath) {
         this.name = name;
         this.description = description;
+        this.imagePath = imagePath;
+    }
+
+    public Comic(String name, String description) {
+        this(name, description, "");
     }
 
     public String getName() {
@@ -28,10 +27,15 @@ public class Comic {
         this.description = description;
     }
 
-    public Image getThumbNail() {
-        return this.thumbnail;
+    public String getImagePath() {
+        return imagePath;
     }
 
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    @Override
     public String toString() {
         return this.name + ": " + this.description;
     }

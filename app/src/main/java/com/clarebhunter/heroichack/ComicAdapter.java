@@ -5,7 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -21,12 +24,14 @@ public class ComicAdapter extends RecyclerView.Adapter<ComicAdapter.ComicViewHol
         public CardView mCardView;
         public TextView mTitleTextView;
         public TextView mDescTextView;
+        public ImageView mCoverImageView;
         public ComicViewHolder(View view) {
             super(view);
             mView = view;
             mCardView = (CardView) view.findViewById(R.id.card_view);
             mTitleTextView = (TextView) view.findViewById(R.id.comic_title_text);
             mDescTextView = (TextView) view.findViewById(R.id.comic_desc_text);
+            mCoverImageView = (ImageView) view.findViewById(R.id.comic_cover_image);
         }
     }
 
@@ -53,6 +58,8 @@ public class ComicAdapter extends RecyclerView.Adapter<ComicAdapter.ComicViewHol
         final Comic comic = mDataset.get(position);
         holder.mTitleTextView.setText(comic.getName());
         holder.mDescTextView.setText(comic.getDescription());
+        Picasso.get().load(comic.getImagePath()).into(holder.mCoverImageView);
+        //TODO: account for comics with incorrect/no provided image path
     }
 
     // Return the size of your dataset (invoked by the layout manager)
